@@ -1,8 +1,8 @@
 IMAGE_NAME = sims4
 CONTAINER_NAME = sims4
 SSH_PORT = 2222
-MOUNT_DIR_HOST = /Users/jafffy/workspace/sims4
-MOUNT_DIR_CONTAINER = /app
+MOUNT_DIR_HOST ?= /Users/jafffy/workspace/sims4
+MOUNT_DIR_CONTAINER ?= /app
 
 .PHONY: build run stop start logs
 
@@ -29,3 +29,4 @@ exec:
 
 clean:
 	docker rm $(CONTAINER_NAME)
+
