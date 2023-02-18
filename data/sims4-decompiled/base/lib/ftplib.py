@@ -174,7 +174,7 @@ class FTP:
             print('*put urgent*', self.sanitize(line))
         self.sock.sendall(line, MSG_OOB)
         resp = self.getmultiline()
-        if resp[:3] not in frozenset({'226', '225', '426'}):
+        if resp[:3] not in frozenset({'426', '225', '226'}):
             raise error_proto(resp)
         return resp
 
@@ -575,7 +575,7 @@ else:
             line = b'ABOR' + B_CRLF
             self.sock.sendall(line)
             resp = self.getmultiline()
-            if resp[:3] not in frozenset({'226', '225', '426'}):
+            if resp[:3] not in frozenset({'426', '225', '226'}):
                 raise error_proto(resp)
             return resp
 
@@ -667,10 +667,10 @@ def ftpcp(source, sourcename, target, targetname='', type='I'):
     sourcehost, sourceport = parse227(source.sendcmd('PASV'))
     target.sendport(sourcehost, sourceport)
     treply = target.sendcmd('STOR ' + targetname)
-    if treply[:3] not in frozenset({'125', '150'}):
+    if treply[:3] not in frozenset({'150', '125'}):
         raise error_proto
     sreply = source.sendcmd('RETR ' + sourcename)
-    if sreply[:3] not in frozenset({'125', '150'}):
+    if sreply[:3] not in frozenset({'150', '125'}):
         raise error_proto
     source.voidresp()
     target.voidresp()

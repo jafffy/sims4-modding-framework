@@ -61,7 +61,7 @@ class Completer:
                 if word in frozenset({'try', 'finally'}):
                     word = word + ':'
                 else:
-                    if word not in frozenset({'pass', 'break', 'None', 'False', 'True', 'else', 'continue'}):
+                    if word not in frozenset({'None', 'else', 'continue', 'pass', 'True', 'break', 'False'}):
                         word = word + ' '
                 matches.append(word)
 

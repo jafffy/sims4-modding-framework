@@ -71,7 +71,7 @@ class netrc:
             self.hosts[entryname] = {}
             while True:
                 tt = lexer.get_token()
-                if tt.startswith('#') or tt in frozenset({'', 'machine', 'macdef', 'default'}):
+                if tt.startswith('#') or tt in frozenset({'', 'default', 'machine', 'macdef'}):
                     if password:
                         self.hosts[entryname] = (
                          login, account, password)

@@ -1139,7 +1139,7 @@ Instruction context:
 ->                66  STORE_FAST               'haslf'
 import os, abc, codecs, errno, stat, sys
 from _thread import allocate_lock as Lock
-if sys.platform in frozenset({'cygwin', 'win32'}):
+if sys.platform in frozenset({'win32', 'cygwin'}):
     from msvcrt import setmode as _setmode
 else:
     _setmode = None

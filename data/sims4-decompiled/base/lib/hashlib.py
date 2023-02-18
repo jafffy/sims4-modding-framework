@@ -93,7 +93,7 @@ def __get_builtin_constructor(name):
                             cache['blake2b'] = _blake2.blake2b
                             cache['blake2s'] = _blake2.blake2s
                         else:
-                            if name in frozenset({'shake_128', 'sha3_384', 'sha3_224', 'sha3_512', 'sha3_256', 'shake_256'}):
+                            if name in frozenset({'sha3_256', 'shake_128', 'sha3_384', 'sha3_512', 'shake_256', 'sha3_224'}):
                                 import _sha3
                                 cache['sha3_224'] = _sha3.sha3_224
                                 cache['sha3_256'] = _sha3.sha3_256
