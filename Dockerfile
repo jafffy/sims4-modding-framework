@@ -14,6 +14,8 @@ RUN apt-get -y install software-properties-common && \
 RUN python3.7 -m ensurepip --default-pip && \
     ln -s /usr/bin/pip3.7 /usr/local/bin/pip
 
+RUN python3.7 -m pip install uncompyle6
+
 # Create a new user for SSH access
 RUN useradd -ms /bin/bash jafffy
 
