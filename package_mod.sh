@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ -z "$1" ]; then
+    echo "Usage: $0 <relative path to Python source file>"
+    exit 1
+fi
+
 # Get the relative path of the file from the command-line parameter
 FILE_PATH=$1
 
