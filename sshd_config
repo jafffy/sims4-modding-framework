@@ -1,0 +1,42 @@
+# Set the SSH port to 22
+Port 22
+
+# Use SSH protocol version 2
+Protocol 2
+
+# Set the host key files
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_dsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Enable privilege separation
+UsePrivilegeSeparation yes
+
+# Set the key regeneration interval to 3600 seconds
+KeyRegenerationInterval 3600
+
+# Set the server key size to 1024 bits
+ServerKeyBits 1024
+
+# Set the syslog facility to AUTH and the log level to INFO
+SyslogFacility AUTH
+LogLevel INFO
+
+# Set the login grace time to 120 seconds
+LoginGraceTime 120
+
+# Disable root login via SSH
+PermitRootLogin no
+
+# Enable strict mode
+StrictModes yes
+
+# Enable RSA authentication and public key authentication
+RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile	%h/.ssh/authorized_keys
+
+# Allow password authentication via SSH
+PasswordAuthentication yes
+
