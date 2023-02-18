@@ -1,23 +1,37 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.7-slim
+FROM ubuntu:latest
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
+# Update the package manager and install SSH
+RUN apt-get update && \
+    apt-get -y install openssh-server
 
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
+# Install Python 3.7 and related packages
+RUN apt-get -y install software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get -y install python3.7 python3.7-dev python3-pip python3.7-venv
 
-# Install pip requirements
-COPY requirements.txt .
-RUN python -m pip install -r requirements.txt
+# Install pip for Python 3.7
+RUN python3.7 -m ensurepip --default-pip && \
+    ln -s /usr/bin/pip3.7 /usr/local/bin/pip
 
-WORKDIR /app
-COPY . /app
+RUN python3.7 -m pip install uncompyle6
 
-# Creates a non-root user with an explicit UID and adds permission to access the /app folder
-# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
+# Create a new user for SSH access
+RUN useradd -ms /bin/bash jafffy
 
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["python", "main.py"]
+# Set the password for the new user
+RUN echo 'jafffy:asdf700' | chpasswd
+RUN echo 'root:asdf700' | chpasswd
+
+# Copy the updated SSH configuration file
+COPY sshd_config /etc/ssh/sshd_config
+
+# Restart the SSH daemon to apply the new configuration
+RUN service ssh restart
+
+# Set the working directory to the new user's home directory
+WORKDIR /home/jafffy
+
+# Start the SSH service
+CMD ["/usr/sbin/sshd", "-D"]
+
