@@ -26,8 +26,7 @@ LogLevel INFO
 # Set the login grace time to 120 seconds
 LoginGraceTime 120
 
-# Disable root login via SSH
-PermitRootLogin no
+PermitRootLogin yes
 
 # Enable strict mode
 StrictModes yes

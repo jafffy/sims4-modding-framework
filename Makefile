@@ -1,8 +1,10 @@
 IMAGE_NAME = sims4
 CONTAINER_NAME = sims4
 SSH_PORT = 2222
-MOUNT_DIR_HOST ?= /Users/jafffy/workspace/sims4
 MOUNT_DIR_CONTAINER ?= /app
+
+pwd := $(shell pwd)
+MOUNT_DIR_HOST ?= $(pwd)
 
 .PHONY: build run stop start logs
 

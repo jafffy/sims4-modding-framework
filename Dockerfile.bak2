@@ -1,0 +1,50 @@
+FROM ubuntu:latest
+
+# Update the package manager and install SSH
+RUN apt-get update && \
+    apt-get -y install openssh-server
+
+# Install Python 3.7 and related packages
+RUN apt-get -y install software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get -y install python3.7 python3.7-dev python3-pip python3.7-venv
+
+# Install pip for Python 3.7
+RUN python3.7 -m ensurepip --default-pip && \
+    ln -s /usr/bin/pip3.7 /usr/local/bin/pip
+
+RUN python3.7 -m pip install uncompyle6
+
+# Create a new user for SSH access
+RUN useradd -ms /bin/bash jafffy
+
+# Set the password for the new user
+RUN echo 'jafffy:asdf700' | chpasswd
+RUN echo 'root:asdf700' | chpasswd
+
+# Copy the updated SSH configuration file
+COPY sshd_config /etc/ssh/sshd_config
+
+# Set up SFTP and fix SSH errors
+RUN mkdir /run/sshd && \
+    ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N "" && \
+    sed -i 's/UsePrivilegeSeparation yes/UsePrivilegeSeparation no/g' /etc/ssh/sshd_config && \
+    sed -i 's/KeyRegenerationInterval 3600/KeyRegenerationInterval 36000/g' /etc/ssh/sshd_config && \
+    sed -i 's/ServerKeyBits 1024/ServerKeyBits 2048/g' /etc/ssh/sshd_config && \
+    sed -i 's/RSAAuthentication yes/#RSAAuthentication yes/g' /etc/ssh/sshd_config && \
+    echo 'Match User jafffy' >> /etc/ssh/sshd_config && \
+    echo 'ForceCommand internal-sftp' >> /etc/ssh/sshd_config && \
+    echo 'ChrootDirectory /home/jafffy' >> /etc/ssh/sshd_config && \
+    echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
+    echo 'PermitTunnel no' >> /etc/ssh/sshd_config && \
+    echo 'AllowAgentForwarding no' >> /etc/ssh/sshd_config && \
+    echo 'AllowTcpForwarding no' >> /etc/ssh/sshd_config && \
+    echo 'X11Forwarding no' >> /etc/ssh/sshd_config
+
+# Set the working directory to the new user's home directory
+WORKDIR /home/jafffy
+
+# Start the SSH service
+CMD ["/usr/sbin/sshd", "-D"]
+

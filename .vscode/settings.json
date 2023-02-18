@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "./data/sims4-decompiled/base/lib",
+        "./data/sims4-decompiled/core",
+        "./data/sims4-decompiled/simulation"
+    ]
+}
