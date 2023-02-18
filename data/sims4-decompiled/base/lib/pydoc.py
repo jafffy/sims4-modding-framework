@@ -941,7 +941,7 @@ def _split_list(s, predicate):
 
 
 def visiblename(name, all=None, obj=None):
-    if name in frozenset({'__version__', '__credits__', '__author__', '__qualname__', '__spec__', '__slots__', '__doc__', '__name__', '__builtins__', '__loader__', '__path__', '__package__', '__cached__', '__module__', '__date__', '__file__'}):
+    if name in frozenset({'__name__', '__date__', '__path__', '__author__', '__qualname__', '__credits__', '__spec__', '__file__', '__cached__', '__module__', '__version__', '__doc__', '__loader__', '__slots__', '__package__', '__builtins__'}):
         return 0
     else:
         if name.startswith('__'):
